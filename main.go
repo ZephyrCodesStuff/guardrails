@@ -23,6 +23,24 @@ type Context struct {
 
 func makeDNSHandler(ctx *Context) func(dns.ResponseWriter, *dns.Msg) {
 	return func(w dns.ResponseWriter, r *dns.Msg) {
+		if len(r.Question) > 0 {
+			qtype := r.Question[0].Qtype
+
+			// Block commonly used DNS amplification types
+			if qtype == dns.TypeANY || qtype == dns.TypeTXT || qtype == dns.TypeAXFR || qtype == dns.TypeNS {
+				ctx.Logger.Warn().
+					Str("client", w.RemoteAddr().String()).
+					Uint16("qtype", qtype).
+					Msg("Refused dangerous query type")
+
+				m := new(dns.Msg)
+				m.SetReply(r)
+				m.SetRcode(r, dns.RcodeRefused)
+				w.WriteMsg(m)
+				return
+			}
+		}
+
 		m := new(dns.Msg)
 		m.SetReply(r)
 		m.Authoritative = true
