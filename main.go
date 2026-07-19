@@ -119,8 +119,8 @@ func main() {
 		Addr string
 		Net  string
 	}{
-		{Addr: ":53", Net: "udp"},
-		{Addr: ":53", Net: "tcp"},
+		{Addr: fmt.Sprintf(":%d", cfg.DNS.Port), Net: "udp"},
+		{Addr: fmt.Sprintf(":%d", cfg.DNS.Port), Net: "tcp"},
 	}
 
 	for _, server := range servers {

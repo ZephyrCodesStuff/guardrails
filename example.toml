@@ -1,5 +1,10 @@
 # Example config.toml file for guardrails
 
+# Configure the DNS server to listen on port 8053.
+# Useful if you cannot bind to 53 as a non-root user.
+[dns]
+port = 8053
+
 # A rule for all YouTube domains.
 # This will block YouTube on Monday, Wednesday, and Friday at 8 PM (20:00).
 [rules.youtube]

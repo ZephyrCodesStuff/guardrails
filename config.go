@@ -10,6 +10,7 @@ import (
 const DefaultConfigPath = "config.toml"
 const DefaultBlockingIP = "0.0.0.0"
 const DefaultTTL = 60
+const DefaultDNSPort = 8053
 
 func allDays() []int {
 	days := make([]int, 7)
@@ -20,6 +21,11 @@ func allDays() []int {
 }
 
 type Config struct {
+	DNS struct {
+		// Port to listen on for DNS requests
+		Port int `toml:"port"`
+	} `toml:"dns"`
+
 	// Array of rules
 	Rules map[string]Rule `toml:"rules"`
 
@@ -70,6 +76,10 @@ func loadConfig(path string) (*Config, error) {
 
 	if config.TTL == 0 {
 		config.TTL = DefaultTTL
+	}
+
+	if config.DNS.Port == 0 {
+		config.DNS.Port = DefaultDNSPort
 	}
 
 	for name, rule := range config.Rules {
