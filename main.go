@@ -114,11 +114,26 @@ func main() {
 	}
 
 	dns.HandleFunc(".", makeDNSHandler(ctx))
-	server := &dns.Server{Addr: ":53", Net: "udp"}
-	ctx.Logger.Info().Msg("Starting DNS server on port 53...")
-	err = server.ListenAndServe()
 
-	if err != nil {
-		ctx.Logger.Error().Err(err).Msg("Failed to start server")
+	servers := []struct {
+		Addr string
+		Net  string
+	}{
+		{Addr: ":53", Net: "udp"},
+		{Addr: ":53", Net: "tcp"},
 	}
+
+	for _, server := range servers {
+		go func(s struct{ Addr, Net string }) {
+			srv := &dns.Server{Addr: s.Addr, Net: s.Net}
+			ctx.Logger.Info().Str("network", s.Net).Msgf("Starting DNS server on %s...", s.Addr)
+			if err := srv.ListenAndServe(); err != nil {
+				ctx.Logger.Error().Err(err).Msgf("Failed to start %s server", s.Net)
+				os.Exit(1)
+			}
+		}(server)
+	}
+
+	// Wait until a termination signal is received
+	select {}
 }

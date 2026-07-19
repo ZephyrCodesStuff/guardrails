@@ -1,0 +1,12 @@
+services:
+  guardrails:
+    build: .
+    image: ghcr.io/zephyrcodesstuff/guardrails:latest
+    container_name: guardrails
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    environment:
+      - CONFIG_PATH=/app/config.toml
+    volumes:
+      - ./config.toml:/app/config.toml:ro

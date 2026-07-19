@@ -2,7 +2,7 @@
 
 It's a DNS server that allows you to block certain domains based on time of day and day of week.
 
-Simple as that. No bells and whistles, no fancy UI, just a config file and a UDP server. (The fanciest thing you'll find is the logger.)
+Simple as that. No bells and whistles, no fancy UI, just a config file and a TCP & UDP server. (The fanciest thing you'll find is the logger.)
 
 ### ❓ Why?
 
@@ -15,7 +15,7 @@ SSHing into my server and reconfiguring this, or changing the DNS settings just 
 ### 🛠️ How to set up
 
 1. Get [Docker](https://docs.docker.com/get-docker/) (along with Docker Compose) installed.
-2. Clone the repository
+2. (Optional) Clone the repository -- you can also just download the `docker-compose.yml` and `example.toml` files.
 3. Copy `example.toml` into `config.toml` and edit it to your liking.
 4. Run `docker-compose up -d` to start the server.
 
