@@ -12,7 +12,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-s -w' -o 
 FROM scratch
 
 WORKDIR /app
-USER nobody:nobody
+# nobody:nobody
+USER 65534:65534
 
 COPY --from=build /go/bin/app /app/app
 CMD ["/app/app"]
