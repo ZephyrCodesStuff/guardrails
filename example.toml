@@ -1,0 +1,21 @@
+# Example config.toml file for guardrails
+
+# A rule for all YouTube domains.
+# This will block YouTube on Monday, Wednesday, and Friday at 8 PM (20:00).
+[rules.youtube]
+
+# You can use a regex to match the domain.
+# This example will match any subdomain of youtube.com, including www.youtube.com, m.youtube.com, etc.
+domain = ".*youtube.com$"
+
+# Hours for which to block the domain.
+# - One hour means only block during this hour.
+# - Two hours means block between these hours.
+#
+# This example only blocks YouTube at 8 PM (20:00) on any day of the week.
+hours = [20]
+
+# Days of the week to block the domain.
+# 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
+# This example blocks YouTube on Monday, Wednesday, and Friday.
+days = [1, 3, 5]
